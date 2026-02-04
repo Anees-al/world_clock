@@ -4,6 +4,6 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base:/world_clock/,
+  base:"/world_clock/",
   plugins: [react(),tailwindcss()],
 })
