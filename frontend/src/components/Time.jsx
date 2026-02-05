@@ -8,6 +8,19 @@ const Time = () => {
     const[newyorkclock,setnewyorkclock]=useState(null);
     const[delhiclock,setdelhiclock]=useState(null);
 
+
+    const [place,setplace]=useState("Europe/Berlin")
+    const [showOptions, setShowOptions] = useState(false);
+
+    const options = [
+  "Asia/Kolkata",
+  "Europe/London",
+  "Europe/Berlin",
+  "America/New_York",
+  "Asia/Dubai",
+  "Asia/Tokyo",
+];
+
     const timezone=[
         londonclock,
         delhiclock,
@@ -28,7 +41,7 @@ const Time = () => {
     useEffect(()=>{
         const fetchclock=async()=>{
             try {
-                const res=await axios.get('https://time.now/developer/api/timezone/Europe/Berlin');
+                const res=await axios.get(`https://time.now/developer/api/timezone/${place}`);
                 const londonres=await axios.get('https://time.now/developer/api/timezone/Europe/London');
                 const dubaires=await axios.get('https://time.now/developer/api/timezone/Asia/Dubai');
                 const newyorkres=await axios.get('https://time.now/developer/api/timezone/America/New_York');
@@ -45,14 +58,25 @@ const Time = () => {
         }
 
         fetchclock()
-    },[])
+    },[place])
   return (
     <div className='flex flex-col  justify-center gap-5 p-10 min-h-screen'>
 
 
         <div className='flex flex-row gap-4 items-center'>
-            <label className='text-lg font-semibold '>Search Here</label>
-            <input type="text" name="" id=""  className='w-[500px] h-9  rounded-lg border border-gray-500 focus:border-orange-600 focus:ring-0 outline-none'/>
+           <select
+  value={place}
+  onChange={(e) => setplace(e.target.value)}
+  className="w-[500px] h-9 rounded-lg border border-gray-500 px-2"
+>
+  {options.map((item) => (
+    <option key={item} value={item}>
+      {item}
+    </option>
+  ))}
+</select>
+
+
         </div>
       <div>
         <p className=' text-6xl sm:text-[200px]  text-center text-gray-900'>{clock ? new Intl.DateTimeFormat("en-US", {timeZone: clock.timezone,timeStyle: "medium"}).format(new Date(clock.datetime)) :"Loading..."}</p>
